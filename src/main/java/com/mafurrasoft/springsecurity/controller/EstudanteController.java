@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/estudante")
+@RequestMapping(path = "api/v1/estudantes")
 public class EstudanteController {
 
     private static final List<Estudante> STUDENT_LIST = Arrays.asList(
