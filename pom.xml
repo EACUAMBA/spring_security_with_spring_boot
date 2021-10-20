@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.mafurrasoft</groupId>
-	<artifactId>spring-security</artifactId>
+	<artifactId>springsecurity</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>spring-security-with-spring-boot</name>
 	<description>Pojecto Spring Security com o objectivo de aprender esta magnifica tecnologia e destrinchar o mundo e universo Spring.</description>
@@ -26,6 +26,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 	</dependencies>
 
