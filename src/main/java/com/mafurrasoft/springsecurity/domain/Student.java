@@ -1,10 +1,10 @@
 package com.mafurrasoft.springsecurity.domain;
 
-public class Estudante {
+public class Student {
     private final Integer id;
     private final String name;
 
-    public Estudante(Integer id, String name){
+    public Student(Integer id, String name){
         this.id = id;
         this.name = name;
     }
