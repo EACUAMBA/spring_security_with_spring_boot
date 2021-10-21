@@ -30,8 +30,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 //        super.configure(http);
         http
                 .authorizeRequests()
-                .antMatchers("/", "index", "/css/*", "/js/*")
-                .permitAll()
+                .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
+                .antMatchers("/api/**").hasRole(STUDENT.name())
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -42,14 +42,14 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     protected UserDetailsService userDetailsService() {
         UserDetails estudante1 = User.builder()
-                .username("estudante1")
-                .password(this.passwordEncoder.encode("senha2021"))
+                .username("student1")
+                .password(this.passwordEncoder.encode("pass2021"))
                 .roles(STUDENT.name())
                 .build();
 
         UserDetails admin1 = User.builder()
                 .username("admin1")
-                .password(this.passwordEncoder.encode("senha2021"))
+                .password(this.passwordEncoder.encode("pass2021"))
                 .roles(ADMIN.name())
                 .build();
 
