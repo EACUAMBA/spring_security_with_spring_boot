@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/estudantes")
+@RequestMapping(path = "api/v1/students")
 public class StudentController {
 
     private static final List<Student> STUDENT_LIST = Arrays.asList(
@@ -20,11 +20,11 @@ public class StudentController {
             new Student(4, "Gutyo Kilamba")
     );
 
-    @GetMapping(path = "/{estudanteId}")
-    public Student getEstudante(@PathVariable("estudanteId") Integer estudanteId){
+    @GetMapping(path = "/{studentId}")
+    public Student getEstudante(@PathVariable("studentId") Integer studentId){
         return STUDENT_LIST.stream()
-                .filter((student)->{return student.getId().equals(estudanteId);})
+                .filter((student)->{return student.getId().equals(studentId);})
                 .findFirst()
-                .orElseThrow(()-> new IllegalStateException("Estudante " + estudanteId + " não existe."));
+                .orElseThrow(()-> new IllegalStateException("Estudante " + studentId + " não existe."));
     }
 }
