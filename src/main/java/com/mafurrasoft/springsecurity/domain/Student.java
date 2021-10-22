@@ -16,4 +16,12 @@ public class Student {
     public String getName() {
         return name;
     }
+
+    @Override
+    public String toString() {
+        return String .format(
+                "%nID - %d%nNome: %s",
+                this.id, this.name
+        );
+    }
 }
