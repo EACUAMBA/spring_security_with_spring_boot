@@ -1,6 +1,7 @@
 package com.mafurrasoft.springsecurity.controller.managment;
 
 import com.mafurrasoft.springsecurity.domain.Student;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -18,12 +19,14 @@ public class  StudentController {
     );
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ADMINTRAINEE')")
     public List<Student> getStudentList(){
         System.out.println("getStudentList");
         return STUDENT_LIST;
     }
 
     @GetMapping(path = "{studentId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ADMINTRAINEE')")
     public void print_A_Student(@PathVariable("studentId") Integer studentId){
         System.out.println("print_A_Student");
         System.out.println(STUDENT_LIST.stream()
@@ -33,17 +36,21 @@ public class  StudentController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('student:write', 'course:write')")
     public void registerNewStudent(@RequestBody Student student){
         System.out.println("registerNewStudent");
         System.out.println(student);
     }
+
     @PutMapping(path = "{studentId}")
+    @PreAuthorize("hasAnyAuthority('student:write', 'course:write')")
     public void updateStudent(@PathVariable("studentId") Integer studentId, @RequestBody Student student){
         System.out.println("updateStudent");
         System.out.println(String.format("%nID - %d,%n New Student Instance: %s", studentId, student));
     }
 
     @DeleteMapping(path = "{studentId}")
+    @PreAuthorize("hasAnyAuthority('student:write', 'course:write')")
     public void deleteStudent(@PathVariable("studentId") Integer studentId){
         System.out.println("deleteStudent");
         System.out.println("StudentId: " + studentId);
