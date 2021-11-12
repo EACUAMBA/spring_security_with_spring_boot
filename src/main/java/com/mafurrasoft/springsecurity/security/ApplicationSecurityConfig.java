@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import java.util.concurrent.TimeUnit;
 
 import static com.mafurrasoft.springsecurity.security.ApplicationUserPermission.COURSE_WRITE;
 import static com.mafurrasoft.springsecurity.security.ApplicationUserPermission.STUDENT_WRITE;
@@ -52,7 +53,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login").permitAll()
                 .defaultSuccessUrl("/courses", true)
                 .and()
-                .rememberMe();
+                .rememberMe()
+                    .tokenValiditySeconds((int)TimeUnit.DAYS.toMillis(30))
+                    .key("algomuitoseguro");
     }
 
     @Override
