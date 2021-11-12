@@ -18,6 +18,10 @@
         h1, h2, p, h3, h4, h5, h6{
             color: #DFF8EBFF;
         }
+        .remember-me{
+            color: #1D70A2FF;
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
@@ -31,6 +35,10 @@
         <p>
             <label for="password" class="sr-only">Password</label>
             <input type="password" id="password" name="password" class="form-control" placeholder="Password" required="">
+        </p>
+        <p>
+            <label for="remember-me" class="remember-me">Remember-me?</label>
+            <input type="checkbox" id="remember-me" name="remember-me" placeholder="Remember-me?">
         </p>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
     </form>
