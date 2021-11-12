@@ -52,20 +52,23 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login").permitAll()
-                .defaultSuccessUrl("/courses", true)
+                    .loginPage("/login").permitAll()
+                    .defaultSuccessUrl("/courses", true)
+                    .usernameParameter("nome")
+                    .passwordParameter("senha")
                 .and()
                 .rememberMe()
-                .tokenValiditySeconds((int)TimeUnit.DAYS.toMillis(30))
-                .key("algomuitoseguro")
+                    .tokenValiditySeconds((int)TimeUnit.DAYS.toMillis(30))
+                    .key("algomuitoseguro")
+                    .rememberMeParameter("lembredemim")
                 .and()
                 .logout()
-                .logoutUrl("/logout")
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
-                .clearAuthentication(true)
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID", "remember-me")
-                .logoutSuccessUrl("/login");
+                    .logoutUrl("/logout")
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
+                    .clearAuthentication(true)
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID", "remember-me")
+                    .logoutSuccessUrl("/login");
 
     }
 
