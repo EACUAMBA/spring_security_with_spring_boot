@@ -1,9 +1,12 @@
 package com.mafurrasoft.springsecurity.security;
 
+import com.mafurrasoft.springsecurity.auth.ApplicationUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -27,11 +30,13 @@ import static com.mafurrasoft.springsecurity.security.ApplicationUserRole.*;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
+    private final ApplicationUserService applicationUserService;
 
     @Autowired
-    public ApplicationSecurityConfig(PasswordEncoder passwordEncoder) {
+    public ApplicationSecurityConfig(PasswordEncoder passwordEncoder, ApplicationUserService applicationUserService) {
         this.passwordEncoder = passwordEncoder;
+        this.applicationUserService = applicationUserService;
     }
 
     @Override
@@ -71,31 +76,17 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                     .logoutSuccessUrl("/login");
 
     }
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider(){
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+
+        provider.setPasswordEncoder(passwordEncoder);
+        provider.setUserDetailsService(this.applicationUserService);
+        return provider;
+    }
 
     @Override
-    @Bean
-    protected UserDetailsService userDetailsService() {
-        UserDetails anaUser = User.builder()
-                .username("ana")
-                .password(this.passwordEncoder.encode("senha2021"))
-//                .roles(STUDENT.name())
-                .authorities(STUDENT.getGrantedAuthoritySet())
-                .build();
-
-        UserDetails mariaUser = User.builder()
-                .username("maria")
-                .password(this.passwordEncoder.encode("senha2021"))
-//                .roles(ADMIN.name())
-                .authorities(ADMIN.getGrantedAuthoritySet())
-                .build();
-
-        UserDetails gildaUser = User.builder()
-                .username("gilda")
-                .password(this.passwordEncoder.encode("senha2021"))
-//                .roles(ADMINTRAINEE.name())
-                .authorities(ADMINTRAINEE.getGrantedAuthoritySet())
-                .build();
-
-        return new InMemoryUserDetailsManager(anaUser, mariaUser, gildaUser);
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(daoAuthenticationProvider());
     }
 }
