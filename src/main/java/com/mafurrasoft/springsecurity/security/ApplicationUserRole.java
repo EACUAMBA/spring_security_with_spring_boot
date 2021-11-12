@@ -25,8 +25,8 @@ public enum ApplicationUserRole {
         return permissionSet;
     }
 
-    public Set<SimpleGrantedAuthority> getGrantedAuthoritySet(){
-        Set<SimpleGrantedAuthority> permissions = getPermissionSet().stream()
+    public Set<GrantedAuthority> getGrantedAuthoritySet(){
+        Set<GrantedAuthority> permissions = getPermissionSet().stream()
                 .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
                 .collect(Collectors.toSet());
 
