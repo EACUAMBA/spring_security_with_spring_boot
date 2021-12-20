@@ -1,6 +1,7 @@
 package com.mafurrasoft.springsecurity.security;
 
 import com.mafurrasoft.springsecurity.auth.ApplicationUserService;
+import com.mafurrasoft.springsecurity.jwt.JwtUsernameAndPasswordAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,6 +47,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 //                .and()
                 .csrf().disable()
+                .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager()))
                 .authorizeRequests()
                 .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
                 .antMatchers("/api/**").hasRole(STUDENT.name())
@@ -54,26 +56,26 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers(HttpMethod.POST, "/management/api/**").hasAuthority(COURSE_WRITE.getPermission())
 //                .antMatchers(HttpMethod.DELETE, "/management/api/**").hasAuthority(COURSE_WRITE.getPermission())
                 .anyRequest()
-                .authenticated()
-                .and()
-                .formLogin()
-                    .loginPage("/login").permitAll()
-                    .defaultSuccessUrl("/courses", true)
-                    .usernameParameter("nome")
-                    .passwordParameter("senha")
-                .and()
-                .rememberMe()
-                    .tokenValiditySeconds((int)TimeUnit.DAYS.toMillis(30))
-                    .key("algomuitoseguro")
-                    .rememberMeParameter("lembredemim")
-                .and()
-                .logout()
-                    .logoutUrl("/logout")
-                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
-                    .clearAuthentication(true)
-                    .invalidateHttpSession(true)
-                    .deleteCookies("JSESSIONID", "remember-me")
-                    .logoutSuccessUrl("/login");
+                .authenticated();
+//                .and()
+//                .formLogin()
+//                    .loginPage("/login").permitAll()
+//                    .defaultSuccessUrl("/courses", true)
+//                    .usernameParameter("nome")
+//                    .passwordParameter("senha")
+//                .and()
+//                .rememberMe()
+//                    .tokenValiditySeconds((int)TimeUnit.DAYS.toMillis(30))
+//                    .key("algomuitoseguro")
+//                    .rememberMeParameter("lembredemim")
+//                .and()
+//                .logout()
+//                    .logoutUrl("/logout")
+//                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
+//                    .clearAuthentication(true)
+//                    .invalidateHttpSession(true)
+//                    .deleteCookies("JSESSIONID", "remember-me")
+//                    .logoutSuccessUrl("/login");
 
     }
     @Bean
