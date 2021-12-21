@@ -30,13 +30,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
         super(authenticationManager);
         this.authenticationManager = authenticationManager;
     }
-
-    /**
-     * @param request
-     * @param response
-     * @return
-     * @throws AuthenticationException
-     */
+    
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
@@ -74,7 +68,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
                 .claim("authorities", authResult.getAuthorities())
                 .setIssuedAt(new Date())
                 .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusWeeks(2)))
-                .signWith(Keys.hmacShaKeyFor("secure".getBytes()))
+                .signWith(Keys.hmacShaKeyFor("spring-secure-with-spring-boot-key".getBytes()))
                 .compact();
         response.addHeader("Authorization", "Bearer " + token);
     }
