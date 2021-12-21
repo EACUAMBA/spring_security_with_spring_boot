@@ -59,7 +59,7 @@ public class JwtTokenVerify extends OncePerRequestFilter {
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-
+            filterChain.doFilter(request, response);
         }catch (JwtException jwtException){
             throw new IllegalStateException(String.format("We cannot validate this token: \"%s\";", token));
         }
