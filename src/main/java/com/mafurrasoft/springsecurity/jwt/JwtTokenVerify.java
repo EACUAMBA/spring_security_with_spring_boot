@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -24,20 +23,28 @@ import java.util.stream.Collectors;
  * Este é um filtro que somente será executado uma vez por request.
  */
 public class JwtTokenVerify extends OncePerRequestFilter {
+    private final JwtSecreteKey jwtSecreteKey;
+    private final JwtConfig jwtConfig;
+
+    public JwtTokenVerify(JwtSecreteKey jwtSecreteKey, JwtConfig jwtConfig) {
+        this.jwtSecreteKey = jwtSecreteKey;
+        this.jwtConfig = jwtConfig;
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String authorizationHeader= request.getHeader("Authorization");
+        String authorizationHeader= request.getHeader(this.jwtConfig.getAuthorizationHeader());
 
-        if(Strings.isNullOrEmpty(authorizationHeader) || !authorizationHeader.startsWith("Bearer ")){
+        if(Strings.isNullOrEmpty(authorizationHeader) || !authorizationHeader.startsWith(this.jwtConfig.getTokenPrefix())){
             filterChain.doFilter(request, response);
         }
 
-            String token = authorizationHeader.replace("Bearer ", "");
+            String token = authorizationHeader.replace(this.jwtConfig.getTokenPrefix(), "");
         try{
-            String key = "spring-secure-with-spring-boot-key";
+
 
             Jws<Claims> claimsJws = Jwts.parserBuilder()
-                    .setSigningKey(Keys.hmacShaKeyFor(key.getBytes()))
+                    .setSigningKey(this.jwtSecreteKey.getSecurityKeyForSigin())
                     .build()
                     .parseClaimsJws(token);
 

@@ -25,10 +25,14 @@ import java.util.Date;
 public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
+    private final JwtConfig jwtConfig;
+    private final JwtSecreteKey jwtSecreteKey;
 
-    public JwtUsernameAndPasswordAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public JwtUsernameAndPasswordAuthenticationFilter(AuthenticationManager authenticationManager, JwtConfig jwtConfig, JwtSecreteKey jwtSecreteKey) {
         super(authenticationManager);
         this.authenticationManager = authenticationManager;
+        this.jwtConfig = jwtConfig;
+        this.jwtSecreteKey = jwtSecreteKey;
     }
     
     @Override
@@ -67,9 +71,9 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
                 .setSubject(authResult.getName())
                 .claim("authorities", authResult.getAuthorities())
                 .setIssuedAt(new Date())
-                .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusWeeks(2)))
-                .signWith(Keys.hmacShaKeyFor("spring-secure-with-spring-boot-key".getBytes()))
+                .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusDays(this.jwtConfig.getExpirationAfterDays())))
+                .signWith(this.jwtSecreteKey.getSecurityKeyForSigin())
                 .compact();
-        response.addHeader("Authorization", "Bearer " + token);
+        response.addHeader(this.jwtConfig.getAuthorizationHeader(), "Bearer " + token);
     }
 }
