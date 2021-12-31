@@ -27,7 +27,7 @@ import static com.mafurrasoft.springsecurity.security.ApplicationUserRole.*;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true) //Serve para habilitar anotação nos metodos do controller para definir as roles e permissions que podem acessar e etc.
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
